@@ -3,7 +3,7 @@ run-name: Dangerous Pets
 on:
   push:
     branches:
-      - master
+      - main
   schedule:
     - cron: '5 0 * * *'
 jobs:
