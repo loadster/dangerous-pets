@@ -1,0 +1,35 @@
+name: production
+run-name: Dangerous Pets
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  loadster-website:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+      - name: Login to Quay.io
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_ID }}
+          password: ${{ secrets.QUAY_PW }}
+      - name: Use Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Build Web
+        run: cd web && npm run build && cd ..
+      - name: Docker Build
+        run: |
+          TAG=${{ github.run_number }}
+          IMAGE=quay.io/loadster/dangerous-pets
+
+          docker build -t $IMAGE:$TAG .
+          docker image tag $IMAGE:$TAG $IMAGE:latest
+          docker push -a $IMAGE
