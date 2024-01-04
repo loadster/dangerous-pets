@@ -16,6 +16,7 @@ app.set('json spaces', 2);
 
 app.use(express.static(staticContentPath));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: '*', credentials: true }));
 
 // Middleware to authenticate a request by the Bearer token
@@ -101,7 +102,7 @@ router.post('/bag', authenticate, (req, res) => {
         req.session.bag.push(item);
         res.json(req.session.bag);
     } else {
-        res.status(404).message({ message: 'Item not found' });
+        res.status(404).json({ message: 'Item not found' });
     }
 });
 
@@ -131,7 +132,7 @@ router.post('/purchase', authenticate, (req, res) => {
 
         bag.splice(0);
 
-        res.json({
+        res.status(201).json({
             status: "success"
         });
     } else {
