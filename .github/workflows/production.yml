@@ -25,6 +25,8 @@ jobs:
           node-version: 18
       - name: Build Web
         run: cd web && npm install && npm run build && cd ..
+      - name: Build API
+        run: cd api && npm install && cd ..
       - name: Docker Build
         run: |
           TAG=${{ github.run_number }}
