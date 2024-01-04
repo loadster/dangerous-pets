@@ -1,0 +1,19 @@
+{
+  "name": "dangerous-pet-store-api",
+  "description": "Dangerous Pet Store API",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "serve": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "define-data-property": "^1.1.1",
+    "express": "^4.18.2"
+  }
+}
