@@ -3,7 +3,7 @@
     <h2>Login</h2>
     <input v-model="username" placeholder="Username" />
     <input type="password" v-model="password" placeholder="Password" />
-    <button @click="login">Login</button>
+    <button class="login-button" @click="login">Login</button>
   </div>
 </template>
 

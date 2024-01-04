@@ -3,7 +3,7 @@
     <h2>Register</h2>
     <input v-model="username" placeholder="Username"/>
     <input type="password" v-model="password" placeholder="Password"/>
-    <button @click="register">Register</button>
+    <button class="register-button" @click="register">Register</button>
   </div>
 </template>
 
