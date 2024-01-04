@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const base = 'http://localhost:3001/api';
+const base = process.env.VUE_APP_API_BASE || 'http://localhost:3001/api';
 
 export default {
     init (token) {
