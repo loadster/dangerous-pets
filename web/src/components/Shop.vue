@@ -18,19 +18,21 @@
           </div>
         </div>
       </div>
-      <div>
-        <h2>Your Bag</h2>
-        <div class="bag">
-          <div v-for="pet in bag" :key="pet.id" class="bag-item">
-            {{ pet.name }} - ${{ pet.price }}
-            <button @click="removeFromBag(pet)">Remove</button>
+      <div class="sidebar">
+        <div>
+          <h2>Your Bag</h2>
+          <div class="bag">
+            <div v-for="pet in bag" :key="pet.id" class="bag-item">
+              {{ pet.name }} - ${{ pet.price }}
+              <button @click="removeFromBag(pet)">Remove</button>
+            </div>
           </div>
-        </div>
-        <div class="checkout" v-if="bag.length">
-          <button @click="checkout()">Checkout</button>
-        </div>
-        <div v-else class="muted">
-          Nothing is in your bag.
+          <div class="checkout" v-if="bag.length">
+            <button @click="checkout()">Checkout</button>
+          </div>
+          <div v-else class="muted">
+            Nothing is in your bag.
+          </div>
         </div>
 
         <Possessions :gold="possessions.gold" :pets="possessions.items"/>
@@ -163,6 +165,12 @@ export default {
 .search {
   padding: 8px 0;
   text-align: right;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .inventory {
