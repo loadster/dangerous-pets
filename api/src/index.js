@@ -19,6 +19,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: '*' }));
 
+let concurrentRequests = 0;
+
+/**
+ * Simulate bottlenecks by slowing down the API under heavy concurrency.
+ */
+app.use('/api', async (req, res, next) => {
+    concurrentRequests++;
+
+    // Add delay based on current load (20ms per concurrent request), max 6300ms
+    const delay = 50 + Math.min(concurrentRequests * 20, 6300);
+
+    if (delay > 0) {
+        await new Promise(resolve => setTimeout(resolve, delay));
+    }
+
+    res.on('finish', () => {
+        concurrentRequests--;
+    });
+
+    next();
+});
+
 // Middleware to authenticate a request by the Bearer token
 async function authenticate(req, res, next) {
     const authHeader = req.headers.authorization;
