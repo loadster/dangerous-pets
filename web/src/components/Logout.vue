@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="logout" class="logout">Logout</button>
+    <button @click="logout" class="logout" data-testid="logout-button">Logout</button>
   </div>
 </template>
 

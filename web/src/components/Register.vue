@@ -1,10 +1,27 @@
 <template>
-  <div>
+  <div data-testid="register-form">
     <Toast :message="errorMessage" />
     <h2>Register</h2>
-    <input v-model="username" placeholder="Username"/>
-    <input type="password" v-model="password" placeholder="Password"/>
-    <button class="register-button" @click="register">Register</button>
+    <input
+      v-model="username"
+      placeholder="Username"
+      data-testid="register-username"
+      name="username"
+    />
+    <input
+      type="password"
+      v-model="password"
+      placeholder="Password"
+      data-testid="register-password"
+      name="password"
+    />
+    <button
+      class="register-button"
+      @click="register"
+      data-testid="register-submit"
+    >
+      Register
+    </button>
   </div>
 </template>
 

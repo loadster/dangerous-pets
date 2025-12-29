@@ -1,18 +1,40 @@
 <template>
-  <div id="shop">
+  <div id="shop" data-testid="shop">
     <template v-if="!showCheckout">
       <div>
         <h2>Pets For Sale</h2>
         <div class="search">
-          <input v-model="query" @input="refresh" placeholder="Search" />
+          <input
+            v-model="query"
+            @input="refresh"
+            placeholder="Search"
+            data-testid="search-input"
+            name="search"
+          />
         </div>
-        <div class="inventory">
-          <div v-for="pet in inventory" :key="pet.id" class="inventory-item">
-            <img :src="`/images/${pet.id}.png`" :title="pet.name" width="128" height="128"/>
+        <div class="inventory" data-testid="inventory">
+          <div
+            v-for="pet in inventory"
+            :key="pet.id"
+            class="inventory-item"
+            :data-testid="`inventory-item-${pet.id}`"
+          >
+            <img
+              :src="`/images/${pet.id}.png`"
+              :title="pet.name"
+              width="128"
+              height="128"
+              :alt="pet.name"
+            />
             <div>
               {{ pet.name }}<br/>
               <span class="gold">@</span>{{ pet.price }}<br/>
-              <button @click="addToBag(pet)">Add to Bag</button>
+              <button
+                @click="addToBag(pet)"
+                :data-testid="`add-to-bag-${pet.id}`"
+              >
+                Add to Bag
+              </button>
             </div>
           </div>
         </div>
@@ -20,16 +42,28 @@
       <div class="sidebar">
         <div>
           <h2>Your Bag</h2>
-          <div class="bag">
-            <div v-for="pet in bag" :key="pet.id" class="bag-item">
+          <div class="bag" data-testid="bag">
+            <div
+              v-for="pet in bag"
+              :key="pet.id"
+              class="bag-item"
+              :data-testid="`bag-item-${pet.id}`"
+            >
               {{ pet.name }} - ${{ pet.price }}
-              <button @click="removeFromBag(pet)">Remove</button>
+              <button
+                @click="removeFromBag(pet)"
+                :data-testid="`remove-from-bag-${pet.id}`"
+              >
+                Remove
+              </button>
             </div>
           </div>
           <div class="checkout" v-if="bag.length">
-            <button @click="checkout()">Checkout</button>
+            <button @click="checkout()" data-testid="checkout-button">
+              Checkout
+            </button>
           </div>
-          <div v-else class="muted">
+          <div v-else class="muted" data-testid="bag-empty">
             Nothing is in your bag.
           </div>
         </div>
@@ -39,33 +73,56 @@
     </template>
 
     <template v-else>
-      <div class="checkout-screen">
+      <div class="checkout-screen" data-testid="checkout-screen">
         <h2>Checkout</h2>
-        <div class="checkout-summary">
+        <div class="checkout-summary" data-testid="checkout-summary">
           <div class="summary-row">
             <span>Your Gold:</span>
-            <span><span class="gold">@</span>{{ possessions.gold }}</span>
+            <span data-testid="checkout-current-gold">
+              <span class="gold">@</span>{{ possessions.gold }}
+            </span>
           </div>
           <div class="summary-row">
             <span>Total Cost:</span>
-            <span><span class="gold">@</span>{{ totalCost }}</span>
+            <span data-testid="checkout-total-cost">
+              <span class="gold">@</span>{{ totalCost }}
+            </span>
           </div>
           <div class="summary-row total">
             <span>Remaining Gold:</span>
-            <span><span class="gold">@</span>{{ possessions.gold - totalCost }}</span>
+            <span data-testid="checkout-remaining-gold">
+              <span class="gold">@</span>{{ possessions.gold - totalCost }}
+            </span>
           </div>
         </div>
 
-        <div class="pets-list">
+        <div class="pets-list" data-testid="checkout-pets-list">
           <h3>Pets in Your Bag:</h3>
-          <div v-for="pet in bag" :key="pet.id" class="checkout-pet">
+          <div
+            v-for="pet in bag"
+            :key="pet.id"
+            class="checkout-pet"
+            :data-testid="`checkout-pet-${pet.id}`"
+          >
             {{ pet.name }} - <span class="gold">@</span>{{ pet.price }}
           </div>
         </div>
 
         <div class="checkout-actions">
-          <button @click="confirmPurchase()" class="buy-button">Buy Pets</button>
-          <button @click="cancelCheckout()" class="cancel-button">Nevermind</button>
+          <button
+            @click="confirmPurchase()"
+            class="buy-button"
+            data-testid="buy-pets-button"
+          >
+            Buy Pets
+          </button>
+          <button
+            @click="cancelCheckout()"
+            class="cancel-button"
+            data-testid="cancel-checkout-button"
+          >
+            Nevermind
+          </button>
         </div>
       </div>
     </template>

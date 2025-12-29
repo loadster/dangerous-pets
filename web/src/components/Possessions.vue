@@ -1,20 +1,25 @@
 <template>
-  <div id="possessions">
+  <div id="possessions" data-testid="possessions">
     <div class="gold-display">
-      Your Gold: <span class="gold">@</span>{{ gold }}
+      Your Gold:
+      <div class="gold-balance" data-testid="gold-amount">
+        <span class="gold">@</span>{{ gold }}
+      </div>
     </div>
     <div class="pets-section">
       <div class="pets-label">Your Pets:</div>
-      <div v-if="pets.length" class="pets-grid">
+      <div v-if="pets.length" class="pets-grid" data-testid="owned-pets">
         <img
           v-for="(pet, index) in pets"
           :key="index"
           :src="`/images/${pet.id}.png`"
           :title="pet.name"
+          :alt="pet.name"
           class="pet-icon"
+          :data-testid="`owned-pet-${pet.id}`"
         />
       </div>
-      <div v-else class="muted">None yet</div>
+      <div v-else class="muted" data-testid="no-pets">None yet!</div>
     </div>
   </div>
 </template>
@@ -49,6 +54,11 @@ export default {
 
 .gold-display {
   margin-bottom: 24px;
+}
+
+.gold-balance {
+  font-size: 32px;
+  padding-top: 10px;
 }
 
 .pets-section {
