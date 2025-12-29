@@ -1,7 +1,7 @@
 # dangerous-pets
 
-This is a simple pet store sample project for examples in the [Loadster Manual](https://loadster.app/manual/).
-It's implemented as a simple NodeJS/Express API combined with a VueJS frontend. It stores sessions and user
+This is a simple pet store sample project for examples in the [Loadster Manual](https://loadster.com/manual/).
+It's implemented as a simple Node/Express API combined with a Vue frontend. It stores sessions and user
 accounts in memory for now, so they will get blown away from time to time when the pet store restarts.
 
 If you'd like to run your own instance for load testing practice or whatever, you can pull down the
