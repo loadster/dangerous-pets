@@ -11,7 +11,6 @@
             <img :src="`/images/${pet.id}.png`" :title="pet.name" width="128" height="128"/>
             <div>
               {{ pet.name }}<br/>
-              {{ pet.type }}<br/>
               <span class="gold">@</span>{{ pet.price }}<br/>
               <button @click="addToBag(pet)">Add to Bag</button>
             </div>

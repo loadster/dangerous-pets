@@ -3,7 +3,7 @@ export default [
         id: 'bearded_tiger',
         name: 'Bearded Tiger',
         type: 'Mammal',
-        price: 1000
+        price: 200
     },
     {
         id: 'carnivorous_ram',
@@ -12,8 +12,8 @@ export default [
         price: 50
     },
     {
-        id: 'crested_dragon',
-        name: 'Crested Dragon',
+        id: 'spiky_dragon',
+        name: 'Spiky Dragon',
         type: 'Reptile',
         price: 300
     },
@@ -60,8 +60,8 @@ export default [
         price: 100
     },
     {
-        id: 'undead_dragon',
-        name: 'Undead Dragon',
+        id: 'zombie_dragon',
+        name: 'Zombie Dragon',
         type: 'Reptile',
         price: 800
     },
