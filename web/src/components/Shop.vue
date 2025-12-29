@@ -1,5 +1,6 @@
 <template>
   <div id="shop" data-testid="shop">
+    <Toast :message="errorMessage" />
     <template v-if="!showCheckout">
       <div>
         <h2>Pets For Sale</h2>
@@ -132,11 +133,13 @@
 <script>
 
 import Possessions from "@/components/Possessions.vue";
+import Toast from "@/components/Toast.vue";
 import api from '@/utils/api';
 
 export default {
   components: {
-    Possessions
+    Possessions,
+    Toast
   },
   data() {
     return {
@@ -147,7 +150,8 @@ export default {
         items: []
       },
       query: '',
-      showCheckout: false
+      showCheckout: false,
+      errorMessage: ''
     };
   },
   computed: {
@@ -194,13 +198,18 @@ export default {
       this.showCheckout = true;
     },
     async confirmPurchase() {
+      this.errorMessage = '';
+
       try {
         await api.purchase();
         this.showCheckout = false;
         this.bag = await api.bag.list();
         this.possessions = await api.possessions.get();
       } catch (err) {
-        alert('Purchase failed!');
+        this.errorMessage = err.response?.data?.message || 'Purchase failed!';
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 5000);
       }
     },
     cancelCheckout() {
