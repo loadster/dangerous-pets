@@ -1,8 +1,12 @@
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 
+const MAX_ACCOUNTS = 100000;
+const MAX_SESSIONS = 100000;
+
 const accounts = [];
 const sessions = {};
+const sessionTokensInOrder = [];
 
 async function createAccount(username, password) {
     const existingAccount = accounts.find(a => a.username === username);
@@ -20,6 +24,11 @@ async function createAccount(username, password) {
     };
 
     accounts.push(account);
+
+    // FIFO: Remove oldest account if we exceed the limit
+    if (accounts.length > MAX_ACCOUNTS) {
+        accounts.shift();
+    }
 
     return account;
 }
@@ -42,6 +51,14 @@ async function createSession(account) {
         account,
         bag: []
     };
+
+    sessionTokensInOrder.push(token);
+
+    // FIFO: Remove oldest session if we exceed the limit
+    if (sessionTokensInOrder.length > MAX_SESSIONS) {
+        const oldestToken = sessionTokensInOrder.shift();
+        delete sessions[oldestToken];
+    }
 
     return token;
 }
