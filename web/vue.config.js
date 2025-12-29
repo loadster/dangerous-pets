@@ -9,7 +9,7 @@ module.exports = defineConfig({
     loaderOptions: {
       sass: {
         additionalData: '@import "@/assets/styles/style.scss";',
-        implementation: require('node-sass')
+        implementation: require('sass')
       },
     },
   },

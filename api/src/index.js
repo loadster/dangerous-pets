@@ -17,7 +17,29 @@ app.set('json spaces', 2);
 app.use(express.static(staticContentPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({ origin: '*' }));
+
+let concurrentRequests = 0;
+
+/**
+ * Simulate bottlenecks by slowing down the API under heavy concurrency.
+ */
+app.use('/api', async (req, res, next) => {
+    concurrentRequests++;
+
+    // Add delay based on current load (20ms per concurrent request), max 6300ms
+    const delay = 50 + Math.min(concurrentRequests * 20, 6300);
+
+    if (delay > 0) {
+        await new Promise(resolve => setTimeout(resolve, delay));
+    }
+
+    res.on('finish', () => {
+        concurrentRequests--;
+    });
+
+    next();
+});
 
 // Middleware to authenticate a request by the Bearer token
 async function authenticate(req, res, next) {
@@ -47,6 +69,14 @@ router.post('/register', async (req, res) => {
         return res.status(400).json({ message: 'Username and password are required' });
     }
 
+    if (username.length < 3 || username.length > 50) {
+        return res.status(400).json({ message: 'Username must be between 3 and 50 characters' });
+    }
+
+    if (password.length < 6 || password.length > 100) {
+        return res.status(400).json({ message: 'Password must be between 6 and 100 characters' });
+    }
+
     try {
         const account = await datastore.createAccount(username, password);
         const token = await datastore.createSession(account);
@@ -60,12 +90,17 @@ router.post('/register', async (req, res) => {
 // Log in to an existing account by username and password
 router.post('/login', async (req, res) => {
     const {username, password} = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Username and password are required' });
+    }
+
     const account = await datastore.findAccountByUsernameAndPassword(username, password);
 
     if (account) {
         const token = await datastore.createSession(account);
 
-        res.status(201).json({
+        res.status(200).json({
             message: 'Login successful!',
             token: token
         });
@@ -79,7 +114,6 @@ router.get('/inventory', authenticate, (req, res) => {
     const query = req.query.q?.toLowerCase();
 
     if (query) {
-        const query = req.query.q.toLowerCase();
         const result = inventory.filter(item => item.name.toLowerCase().includes(query));
 
         res.json(result);

@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <h1>Dangerous Pets</h1>
+  <div id="app" data-testid="app">
+    <h1 data-testid="app-title">Dangerous Pets</h1>
     <template v-if="token">
       <Shop/>
       <div class="controls">
