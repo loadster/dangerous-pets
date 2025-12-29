@@ -1,12 +1,22 @@
-import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 
+const TOKEN_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 const MAX_ACCOUNTS = 100000;
 const MAX_SESSIONS = 100000;
 
 const accounts = [];
 const sessions = {};
 const sessionTokensInOrder = [];
+
+function generateToken() {
+    let token = '';
+
+    for (let i = 0; i < 32; i++) {
+        token += TOKEN_CHARS.charAt(Math.floor(Math.random() * TOKEN_CHARS.length));
+    }
+
+    return token;
+}
 
 async function createAccount(username, password) {
     const existingAccount = accounts.find(a => a.username === username);
@@ -45,7 +55,7 @@ async function findAccountByUsernameAndPassword(username, password) {
 }
 
 async function createSession(account) {
-    const token = crypto.randomBytes(16).toString('hex');
+    const token = generateToken();
 
     sessions[token] = {
         account,
