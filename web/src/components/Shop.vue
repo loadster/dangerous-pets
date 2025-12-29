@@ -1,39 +1,73 @@
 <template>
   <div id="shop">
-    <div>
-      <h2>Pets For Sale</h2>
-      <div class="search">
-        <input v-model="query" @input="refresh" placeholder="Search" />
-      </div>
-      <div class="inventory">
-        <div v-for="pet in inventory" :key="pet.id" class="inventory-item">
-          <img :src="`/images/${pet.id}.png`" :title="pet.name" width="128" height="128"/>
-          <div>
-            {{ pet.name }}<br/>
-            {{ pet.type }}<br/>
-            <span class="gold">@</span>{{ pet.price }}<br/>
-            <button @click="addToBag(pet)">Add to Bag</button>
+    <template v-if="!showCheckout">
+      <div>
+        <h2>Pets For Sale</h2>
+        <div class="search">
+          <input v-model="query" @input="refresh" placeholder="Search" />
+        </div>
+        <div class="inventory">
+          <div v-for="pet in inventory" :key="pet.id" class="inventory-item">
+            <img :src="`/images/${pet.id}.png`" :title="pet.name" width="128" height="128"/>
+            <div>
+              {{ pet.name }}<br/>
+              {{ pet.type }}<br/>
+              <span class="gold">@</span>{{ pet.price }}<br/>
+              <button @click="addToBag(pet)">Add to Bag</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div>
-      <h2>Your Bag</h2>
-      <div class="bag">
-        <div v-for="pet in bag" :key="pet.id" class="bag-item">
-          {{ pet.name }} - ${{ pet.price }}
-          <button @click="removeFromBag(pet)">Remove</button>
+      <div>
+        <h2>Your Bag</h2>
+        <div class="bag">
+          <div v-for="pet in bag" :key="pet.id" class="bag-item">
+            {{ pet.name }} - ${{ pet.price }}
+            <button @click="removeFromBag(pet)">Remove</button>
+          </div>
+        </div>
+        <div class="checkout" v-if="bag.length">
+          <button @click="checkout()">Checkout</button>
+        </div>
+        <div v-else class="muted">
+          Nothing is in your bag.
+        </div>
+
+        <Possessions :gold="possessions.gold" :pets="possessions.items"/>
+      </div>
+    </template>
+
+    <template v-else>
+      <div class="checkout-screen">
+        <h2>Checkout</h2>
+        <div class="checkout-summary">
+          <div class="summary-row">
+            <span>Your Gold:</span>
+            <span><span class="gold">@</span>{{ possessions.gold }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Total Cost:</span>
+            <span><span class="gold">@</span>{{ totalCost }}</span>
+          </div>
+          <div class="summary-row total">
+            <span>Remaining Gold:</span>
+            <span><span class="gold">@</span>{{ possessions.gold - totalCost }}</span>
+          </div>
+        </div>
+
+        <div class="pets-list">
+          <h3>Pets in Your Bag:</h3>
+          <div v-for="pet in bag" :key="pet.id" class="checkout-pet">
+            {{ pet.name }} - <span class="gold">@</span>{{ pet.price }}
+          </div>
+        </div>
+
+        <div class="checkout-actions">
+          <button @click="confirmPurchase()" class="buy-button">Buy Pets</button>
+          <button @click="cancelCheckout()" class="cancel-button">Nevermind</button>
         </div>
       </div>
-      <div class="checkout" v-if="bag.length">
-        <button @click="checkout()">Checkout</button>
-      </div>
-      <div v-else class="muted">
-        Nothing is in your bag.
-      </div>
-
-      <Possessions :gold="possessions.gold" :pets="possessions.items"/>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -54,8 +88,14 @@ export default {
         gold: 0,
         items: []
       },
-      query: ''
+      query: '',
+      showCheckout: false
     };
+  },
+  computed: {
+    totalCost() {
+      return this.bag.reduce((sum, pet) => sum + (pet.price || 0), 0);
+    }
   },
   async created() {
     try {
@@ -92,15 +132,21 @@ export default {
         console.error(error.response.data);
       }
     },
-    async checkout () {
+    checkout() {
+      this.showCheckout = true;
+    },
+    async confirmPurchase() {
       try {
         await api.purchase();
+        this.showCheckout = false;
+        this.bag = await api.bag.list();
+        this.possessions = await api.possessions.get();
       } catch (err) {
         alert('Purchase failed!');
       }
-
-      this.bag = await api.bag.list();
-      this.possessions = await api.possessions.get();
+    },
+    cancelCheckout() {
+      this.showCheckout = false;
     }
   }
 };
@@ -160,6 +206,76 @@ export default {
     width: 100%;
     padding: 8px;
   }
+}
+
+.checkout-screen {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px;
+  background: #ad7d2d;
+
+  h2 {
+    margin-top: 0;
+  }
+
+  h3 {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+}
+
+.checkout-summary {
+  background: black;
+  padding: 24px;
+  margin: 32px 0;
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 16px 0;
+
+    &.total {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 2px solid white;
+      font-size: 28px;
+    }
+  }
+}
+
+.pets-list {
+  margin: 32px 0;
+
+  .checkout-pet {
+    padding: 8px 0;
+  }
+}
+
+.checkout-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 48px;
+
+  button {
+    flex: 1;
+    padding: 16px;
+    font-size: 28px;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &.buy-button {
+      background: #2d7d2d;
+      border-color: #2d7d2d;
+    }
+
+    &.cancel-button {
+      background: transparent;
+    }
+  }
+}
+
+.gold {
+  color: #ffd700;
 }
 
 </style>
