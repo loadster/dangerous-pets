@@ -47,6 +47,14 @@ router.post('/register', async (req, res) => {
         return res.status(400).json({ message: 'Username and password are required' });
     }
 
+    if (username.length < 3 || username.length > 50) {
+        return res.status(400).json({ message: 'Username must be between 3 and 50 characters' });
+    }
+
+    if (password.length < 6 || password.length > 100) {
+        return res.status(400).json({ message: 'Password must be between 6 and 100 characters' });
+    }
+
     try {
         const account = await datastore.createAccount(username, password);
         const token = await datastore.createSession(account);
@@ -60,12 +68,17 @@ router.post('/register', async (req, res) => {
 // Log in to an existing account by username and password
 router.post('/login', async (req, res) => {
     const {username, password} = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Username and password are required' });
+    }
+
     const account = await datastore.findAccountByUsernameAndPassword(username, password);
 
     if (account) {
         const token = await datastore.createSession(account);
 
-        res.status(201).json({
+        res.status(200).json({
             message: 'Login successful!',
             token: token
         });
