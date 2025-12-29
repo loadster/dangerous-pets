@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Toast :message="errorMessage" />
     <h2>Login</h2>
     <input v-model="username" placeholder="Username" />
     <input type="password" v-model="password" placeholder="Password" />
@@ -10,22 +11,32 @@
 <script>
 
 import api from '@/utils/api.js';
+import Toast from '@/components/Toast.vue';
 
 export default {
+  components: {
+    Toast
+  },
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      errorMessage: ''
     };
   },
   methods: {
     async login() {
+      this.errorMessage = '';
+
       try {
         const token = await api.login(this.username, this.password);
 
         this.$emit('login', token);
       } catch (error) {
-        console.error(error);
+        this.errorMessage = error.response?.data?.message || 'Login failed';
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 5000);
       }
     }
   }
