@@ -14,4 +14,4 @@ $ docker run -it -p3001:3001 quay.io/loadster/dangerous-pets
 
 You can then view it in your browser at http://localhost:3001.
 
-The live pet store is usually running at https://petstore.loadster.app.
+The live pet store is usually running at https://petstore.loadster.com.

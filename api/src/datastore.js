@@ -1,27 +1,38 @@
 import crypto from 'crypto';
+import bcrypt from 'bcrypt';
 
 const accounts = [];
 const sessions = {};
 
 async function createAccount(username, password) {
-    if (await findAccountByUsernameAndPassword(username, password)) {
+    const existingAccount = accounts.find(a => a.username === username);
+
+    if (existingAccount) {
         throw new Error('Username taken!');
-    } else {
-        const account = {
-            username,
-            password,
-            gold: 5000,
-            items: []
-        };
-
-        accounts.push(account);
-
-        return account;
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const account = {
+        username,
+        password: hashedPassword,
+        gold: 5000,
+        items: []
+    };
+
+    accounts.push(account);
+
+    return account;
 }
 
 async function findAccountByUsernameAndPassword(username, password) {
-    return accounts.find(a => a.username === username && a.password === password);
+    const account = accounts.find(a => a.username === username);
+
+    if (!account) {
+        return null;
+    }
+
+    const isValid = await bcrypt.compare(password, account.password);
+    return isValid ? account : null;
 }
 
 async function createSession(account) {

@@ -17,7 +17,7 @@ app.set('json spaces', 2);
 app.use(express.static(staticContentPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({ origin: '*' }));
 
 // Middleware to authenticate a request by the Bearer token
 async function authenticate(req, res, next) {
@@ -79,7 +79,6 @@ router.get('/inventory', authenticate, (req, res) => {
     const query = req.query.q?.toLowerCase();
 
     if (query) {
-        const query = req.query.q.toLowerCase();
         const result = inventory.filter(item => item.name.toLowerCase().includes(query));
 
         res.json(result);
