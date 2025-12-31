@@ -24,10 +24,10 @@ export default [
         price: 250
     },
     {
-        id: 'innocent_poodle',
-        name: 'Innocent Poodle',
+        id: 'pampered_poodle',
+        name: 'Pampered Poodle',
         type: 'Mammal',
-        price: 1200
+        price: 350
     },
     {
         id: 'killer_bees',
