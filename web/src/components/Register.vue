@@ -1,5 +1,5 @@
 <template>
-  <div data-testid="register-form" class="md:flex md:flex-col md:gap-3 md:max-w-[400px] sm:gap-2.5 sm:max-w-full">
+  <div data-testid="register-form" class="space-y-2">
     <Toast :message="errorMessage"/>
     <h2>Register</h2>
     <input

@@ -4,21 +4,21 @@
     <template v-if="!showCheckout">
       <div class="grow">
         <h2>Pets For Sale</h2>
-        <div class="py-2 text-right md:text-left">
+        <div class="py-2 text-right">
           <input
             v-model="query"
             @input="refresh"
             placeholder="Search"
             data-testid="search-input"
             name="search"
-            class="md:w-full md:p-2"
+            class="w-full md:w-48 px-1"
           />
         </div>
         <div class="grid grid-cols-1 border-8 border-retro-bronze xl:grid-cols-3 md:grid-cols-2" data-testid="inventory">
           <div
             v-for="pet in inventory"
             :key="pet.id"
-            class="bg-black border-8 border-retro-bronze p-8 flex flex-col justify-center sm:flex-row gap-4 whitespace-nowrap items-center md:flex-col md:items-start md:gap-2 md:whitespace-normal"
+            class="bg-black border-8 border-retro-bronze p-8 flex flex-col xl:flex-row justify-center gap-4 whitespace-nowrap items-center"
             :data-testid="`inventory-item-${pet.id}`"
           >
             <img
@@ -31,11 +31,13 @@
             />
             <div>
               {{ pet.name }}<br/>
-              <span class="gold">@</span>{{ pet.price }}<br/>
+              <div>
+                <span class="text-retro-gold">@</span>{{ pet.price }}<br/>
+              </div>
               <button
                 @click="addToBag(pet)"
                 :data-testid="`add-to-bag-${pet.id}`"
-                class="px-2"
+                class="px-2 mt-2"
               >
                 Add to Bag
               </button>
@@ -46,18 +48,19 @@
       <div class="flex flex-col justify-between min-w-[240px] md:order-[-1]">
         <div>
           <h2>Your Bag</h2>
-          <div class="my-16 xl:my-8 md:my-6 md:w-full" data-testid="bag">
+          <div class="my-16 xl:my-8 md:my-6 md:w-full space-y-4" data-testid="bag">
             <div
               v-for="pet in bag"
               :key="pet.id"
-              class="flex items-center justify-between my-4 gap-8 md:flex-col md:items-start md:gap-2 md:w-full md:break-words"
               :data-testid="`bag-item-${pet.id}`"
             >
-              {{ pet.name }} - ${{ pet.price }}
+              <div>
+                {{ pet.name }} - <span class="text-retro-gold">@</span>{{ pet.price }}
+              </div>
               <button
                 @click="removeFromBag(pet)"
                 :data-testid="`remove-from-bag-${pet.id}`"
-                class="md:w-full"
+                class="px-1"
               >
                 Remove
               </button>
@@ -83,20 +86,23 @@
         <div class="bg-black p-6 my-8 md:p-6 md:my-6" data-testid="checkout-summary">
           <div class="flex justify-between my-4 md:my-3">
             <span>Your Gold:</span>
-            <span data-testid="checkout-current-gold">
-              <span class="gold">@</span>{{ possessions.gold }}
+            <span>
+              <span class="text-retro-gold">@</span>
+              <span data-testid="checkout-current-gold">
+                {{ possessions.gold }}
+              </span>
             </span>
           </div>
           <div class="flex justify-between my-4 md:my-3">
             <span>Total Cost:</span>
             <span data-testid="checkout-total-cost">
-              <span class="gold">@</span>{{ totalCost }}
+              <span class="text-retro-gold">@</span>{{ totalCost }}
             </span>
           </div>
           <div class="flex justify-between my-4 mt-8 pt-4 border-t-2 border-white text-retro-xlarge md:my-3 md:mt-6 md:pt-3 md:text-retro-xlarge-mobile">
             <span>Remaining Gold:</span>
             <span data-testid="checkout-remaining-gold">
-              <span class="gold">@</span>{{ possessions.gold - totalCost }}
+              <span class="text-retro-gold">@</span>{{ possessions.gold - totalCost }}
             </span>
           </div>
         </div>

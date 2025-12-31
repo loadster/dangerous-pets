@@ -1,16 +1,15 @@
 <template>
-  <div id="app" data-testid="app" class="p-12 lg:p-8 md:p-6 sm:p-4">
-    <h1 data-testid="app-title">Dangerous Pets</h1>
-    <template v-if="token">
+  <div id="app" data-testid="app" class="p-12 lg:p-8 md:p-6 sm:p-4 max-w-screen-xl mx-auto">
+    <div v-if="token" class="space-y-8">
+      <h1 data-testid="app-title">Dangerous Pets</h1>
       <Shop/>
-      <div class="py-16 md:py-8">
-        <Logout @logout="setToken"/>
-      </div>
-    </template>
-    <template v-else>
+      <Logout @logout="setToken"/>
+    </div>
+    <div v-else class="mx-auto max-w-screen-sm space-y-8">
+      <h1 data-testid="app-title">Dangerous Pets</h1>
       <Register @register="setToken"/>
       <Login @login="setToken"/>
-    </template>
+    </div>
   </div>
 </template>
 

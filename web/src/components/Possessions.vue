@@ -2,8 +2,11 @@
   <div id="possessions" data-testid="possessions" class="my-12 md:my-8 sm:my-6">
     <div class="mb-6">
       Your Gold:
-      <div class="text-retro-large pt-2.5 md:text-retro-gold-mobile sm:text-retro-gold-mobile-sm" data-testid="gold-amount">
-        <span class="gold">@</span>{{ gold }}
+      <div class="text-retro-large pt-2.5 md:text-retro-gold-mobile sm:text-retro-gold-mobile-sm">
+        <span class="gold">@</span>
+        <span data-testid="gold-amount">
+          {{ gold }}
+        </span>
       </div>
     </div>
     <div>
