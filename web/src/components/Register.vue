@@ -1,24 +1,26 @@
 <template>
-  <div data-testid="register-form">
-    <Toast :message="errorMessage" />
+  <div data-testid="register-form" class="md:flex md:flex-col md:gap-3 md:max-w-[400px] sm:gap-2.5 sm:max-w-full">
+    <Toast :message="errorMessage"/>
     <h2>Register</h2>
     <input
-      v-model="username"
-      placeholder="Username"
-      data-testid="register-username"
-      name="username"
+        v-model="username"
+        placeholder="Username"
+        data-testid="register-username"
+        name="username"
+        class="mr-2 md:w-full md:mr-0 md:p-2"
     />
     <input
-      type="password"
-      v-model="password"
-      placeholder="Password"
-      data-testid="register-password"
-      name="password"
+        type="password"
+        v-model="password"
+        placeholder="Password"
+        data-testid="register-password"
+        name="password"
+        class="mr-2 md:w-full md:mr-0 md:p-2"
     />
     <button
-      class="register-button"
-      @click="register"
-      data-testid="register-submit"
+        class="min-w-[120px] md:w-full md:min-w-0 md:p-3"
+        @click="register"
+        data-testid="register-submit"
     >
       Register
     </button>
@@ -62,15 +64,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-
-input {
-  margin-right: 8px;
-}
-
-button {
-  min-width: 120px;
-}
-
-</style>
