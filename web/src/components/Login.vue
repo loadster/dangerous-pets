@@ -1,5 +1,5 @@
 <template>
-  <div data-testid="login-form">
+  <div data-testid="login-form" class="space-y-2">
     <Toast :message="errorMessage" />
     <h2>Login</h2>
     <input
@@ -7,6 +7,7 @@
       placeholder="Username"
       data-testid="login-username"
       name="username"
+      class="mr-2 md:w-full md:mr-0 md:p-2"
     />
     <input
       type="password"
@@ -14,9 +15,10 @@
       placeholder="Password"
       data-testid="login-password"
       name="password"
+      class="mr-2 md:w-full md:mr-0 md:p-2"
     />
     <button
-      class="login-button"
+      class="min-w-[120px] md:w-full md:min-w-0 md:p-3"
       @click="login"
       data-testid="login-submit"
     >
@@ -60,15 +62,3 @@ export default {
 };
 
 </script>
-
-<style lang="scss" scoped>
-
-input {
-  margin-right: 8px;
-}
-
-button {
-  min-width: 120px;
-}
-
-</style>

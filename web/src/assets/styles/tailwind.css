@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom font-face */
+@font-face {
+  font-family: "VT";
+  src: url("@/assets/fonts/VT323-Regular.ttf");
+}
+
+/* Base layer customizations to match retro theme */
+@layer base {
+  * {
+    @apply font-retro text-retro-base box-border;
+  }
+
+  html,
+  body {
+    @apply m-0 p-0 bg-black text-white;
+  }
+
+  h1 {
+    @apply text-retro-h1 mt-0;
+  }
+
+  h2 {
+    @apply text-retro-h2;
+  }
+
+  h3 {
+    @apply text-retro-h3;
+  }
+
+  input,
+  button {
+    @apply bg-transparent text-white border-2 border-white;
+  }
+
+  button,
+  input[type="button"] {
+    @apply cursor-pointer;
+  }
+
+  /* Responsive base font sizes */
+  @media (max-width: 1023px) {
+    h1 {
+      @apply text-retro-h1-tablet;
+    }
+  }
+
+  @media (max-width: 767px) {
+    * {
+      @apply text-retro-base-mobile;
+    }
+    h1 {
+      @apply text-retro-h1-mobile;
+    }
+  }
+
+  @media (max-width: 479px) {
+    * {
+      @apply text-retro-base-mobile-sm;
+    }
+    h1 {
+      @apply text-retro-h1-mobile-sm;
+    }
+    input,
+    button {
+      @apply p-2;
+    }
+  }
+}
+
+/* Component layer for reusable patterns */
+@layer components {
+  .gold {
+    @apply text-retro-gold;
+  }
+
+  .muted {
+    @apply opacity-60;
+  }
+}

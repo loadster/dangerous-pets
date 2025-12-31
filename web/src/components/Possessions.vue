@@ -1,21 +1,24 @@
 <template>
-  <div id="possessions" data-testid="possessions">
-    <div class="gold-display">
+  <div id="possessions" data-testid="possessions" class="my-12 md:my-8 sm:my-6">
+    <div class="mb-6">
       Your Gold:
-      <div class="gold-balance" data-testid="gold-amount">
-        <span class="gold">@</span>{{ gold }}
+      <div class="text-retro-large pt-2.5 md:text-retro-gold-mobile sm:text-retro-gold-mobile-sm">
+        <span class="gold">@</span>
+        <span data-testid="gold-amount">
+          {{ gold }}
+        </span>
       </div>
     </div>
-    <div class="pets-section">
-      <div class="pets-label">Your Pets:</div>
-      <div v-if="pets.length" class="pets-grid" data-testid="owned-pets">
+    <div>
+      <div class="mb-4">Your Pets:</div>
+      <div v-if="pets.length" class="flex gap-2 mt-2" data-testid="owned-pets">
         <img
           v-for="(pet, index) in pets"
           :key="index"
           :src="`/images/${pet.id}.png`"
           :title="pet.name"
           :alt="pet.name"
-          class="pet-icon"
+          class="w-12 h-12 aspect-square border-2 border-white bg-black hover:border-retro-gold"
           :data-testid="`owned-pet-${pet.id}`"
         />
       </div>
@@ -41,49 +44,3 @@ export default {
 };
 
 </script>
-
-<style lang="scss">
-
-#possessions {
-  margin: 48px 0;
-}
-
-.gold {
-  color: gold;
-}
-
-.gold-display {
-  margin-bottom: 24px;
-}
-
-.gold-balance {
-  font-size: 32px;
-  padding-top: 10px;
-}
-
-.pets-section {
-  .pets-label {
-    margin-bottom: 16px;
-  }
-
-  .pets-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 64px);
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .pet-icon {
-    width: 64px;
-    height: 64px;
-    border: 2px solid white;
-    background: black;
-    cursor: help;
-
-    &:hover {
-      border-color: gold;
-    }
-  }
-}
-
-</style>

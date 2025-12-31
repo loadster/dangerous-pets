@@ -1,23 +1,24 @@
 <template>
-  <div id="shop" data-testid="shop">
+  <div id="shop" data-testid="shop" class="flex flex-col gap-16 xl:gap-8 md:flex-row-reverse md:gap-8 sm:gap-6 w-full">
     <Toast :message="errorMessage" />
     <template v-if="!showCheckout">
-      <div>
+      <div class="grow">
         <h2>Pets For Sale</h2>
-        <div class="search">
+        <div class="py-2 text-right">
           <input
             v-model="query"
             @input="refresh"
             placeholder="Search"
             data-testid="search-input"
             name="search"
+            class="w-full md:w-48 px-1"
           />
         </div>
-        <div class="inventory" data-testid="inventory">
+        <div class="grid grid-cols-1 border-8 border-retro-bronze xl:grid-cols-3 md:grid-cols-2" data-testid="inventory">
           <div
             v-for="pet in inventory"
             :key="pet.id"
-            class="inventory-item"
+            class="bg-black border-8 border-retro-bronze p-8 flex flex-col xl:flex-row justify-center gap-4 whitespace-nowrap items-center"
             :data-testid="`inventory-item-${pet.id}`"
           >
             <img
@@ -26,13 +27,17 @@
               width="128"
               height="128"
               :alt="pet.name"
+              class="md:self-center sm:w-24 sm:h-24"
             />
             <div>
               {{ pet.name }}<br/>
-              <span class="gold">@</span>{{ pet.price }}<br/>
+              <div>
+                <span class="text-retro-gold">@</span>{{ pet.price }}<br/>
+              </div>
               <button
                 @click="addToBag(pet)"
                 :data-testid="`add-to-bag-${pet.id}`"
+                class="px-2 mt-2"
               >
                 Add to Bag
               </button>
@@ -40,27 +45,29 @@
           </div>
         </div>
       </div>
-      <div class="sidebar">
+      <div class="flex flex-col justify-between min-w-[240px] md:order-[-1]">
         <div>
           <h2>Your Bag</h2>
-          <div class="bag" data-testid="bag">
+          <div class="my-16 xl:my-8 md:my-6 md:w-full space-y-4" data-testid="bag">
             <div
               v-for="pet in bag"
               :key="pet.id"
-              class="bag-item"
               :data-testid="`bag-item-${pet.id}`"
             >
-              {{ pet.name }} - ${{ pet.price }}
+              <div>
+                {{ pet.name }} - <span class="text-retro-gold">@</span>{{ pet.price }}
+              </div>
               <button
                 @click="removeFromBag(pet)"
                 :data-testid="`remove-from-bag-${pet.id}`"
+                class="px-1"
               >
                 Remove
               </button>
             </div>
           </div>
-          <div class="checkout" v-if="bag.length">
-            <button @click="checkout()" data-testid="checkout-button">
+          <div class="md:w-full" v-if="bag.length">
+            <button @click="checkout()" data-testid="checkout-button" class="block w-full p-2">
               Checkout
             </button>
           </div>
@@ -74,52 +81,55 @@
     </template>
 
     <template v-else>
-      <div class="checkout-screen" data-testid="checkout-screen">
-        <h2>Checkout</h2>
-        <div class="checkout-summary" data-testid="checkout-summary">
-          <div class="summary-row">
+      <div class="mx-auto border-8 border-retro-bronze p-6" data-testid="checkout-screen">
+        <h2 class="mt-0">Checkout</h2>
+        <div class="bg-black my-8" data-testid="checkout-summary">
+          <div class="flex justify-between my-4 md:my-3">
             <span>Your Gold:</span>
-            <span data-testid="checkout-current-gold">
-              <span class="gold">@</span>{{ possessions.gold }}
+            <span>
+              <span class="text-retro-gold">@</span>
+              <span data-testid="checkout-current-gold">
+                {{ possessions.gold }}
+              </span>
             </span>
           </div>
-          <div class="summary-row">
+          <div class="flex justify-between my-4 md:my-3">
             <span>Total Cost:</span>
             <span data-testid="checkout-total-cost">
-              <span class="gold">@</span>{{ totalCost }}
+              <span class="text-retro-gold">@</span>{{ totalCost }}
             </span>
           </div>
-          <div class="summary-row total">
+          <div class="flex w-full justify-between my-4 mt-8 pt-4 border-t-2 border-white text-retro-xlarge">
             <span>Remaining Gold:</span>
             <span data-testid="checkout-remaining-gold">
-              <span class="gold">@</span>{{ possessions.gold - totalCost }}
+              <span class="text-retro-gold">@</span>{{ possessions.gold - totalCost }}
             </span>
           </div>
         </div>
 
-        <div class="pets-list" data-testid="checkout-pets-list">
-          <h3>Pets in Your Bag:</h3>
+        <div class="my-8" data-testid="checkout-pets-list">
+          <h3 class="text-retro-h3 mb-4 sm:text-retro-h3-mobile">Pets in Your Bag:</h3>
           <div
             v-for="pet in bag"
             :key="pet.id"
-            class="checkout-pet"
+            class="py-2"
             :data-testid="`checkout-pet-${pet.id}`"
           >
             {{ pet.name }} - <span class="gold">@</span>{{ pet.price }}
           </div>
         </div>
 
-        <div class="checkout-actions">
+        <div class="flex gap-4 mt-12 md:flex-col md:gap-3 md:mt-6">
           <button
             @click="confirmPurchase()"
-            class="buy-button"
+            class="flex-1 p-4 text-retro-button-large cursor-pointer whitespace-nowrap bg-retro-green border-retro-green md:w-full md:p-3 md:text-retro-button-mobile sm:p-2.5 sm:text-retro-button-mobile-sm"
             data-testid="buy-pets-button"
           >
             Buy Pets
           </button>
           <button
             @click="cancelCheckout()"
-            class="cancel-button"
+            class="flex-1 p-4 text-retro-button-large cursor-pointer whitespace-nowrap bg-transparent md:w-full md:p-3 md:text-retro-button-mobile sm:p-2.5 sm:text-retro-button-mobile-sm"
             data-testid="cancel-checkout-button"
           >
             Nevermind
@@ -219,136 +229,3 @@ export default {
 };
 
 </script>
-
-<style lang="scss">
-
-#shop {
-  display: flex;
-  column-gap: 64px;
-}
-
-.search {
-  padding: 8px 0;
-  text-align: right;
-}
-
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.inventory {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: 16px;
-  row-gap: 16px;
-  padding: 16px;
-  background: #ad7d2d;
-  flex-grow: 100;
-}
-
-.inventory-item {
-  background: black;
-  padding: 16px;
-  display: flex;
-  gap: 16px;
-  white-space: nowrap;
-  align-items: center;
-
-  button {
-    margin: 16px 0 0 0;
-  }
-}
-
-.bag {
-  margin: 64px 0;
-
-  .bag-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 16px 0;
-    gap: 32px;
-  }
-}
-
-.checkout {
-  button {
-    display: block;
-    width: 100%;
-    padding: 8px;
-  }
-}
-
-.checkout-screen {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 32px;
-  background: #ad7d2d;
-
-  h2 {
-    margin-top: 0;
-  }
-
-  h3 {
-    font-size: 32px;
-    margin-bottom: 16px;
-  }
-}
-
-.checkout-summary {
-  background: black;
-  padding: 24px;
-  margin: 32px 0;
-
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    margin: 16px 0;
-
-    &.total {
-      margin-top: 32px;
-      padding-top: 16px;
-      border-top: 2px solid white;
-      font-size: 28px;
-    }
-  }
-}
-
-.pets-list {
-  margin: 32px 0;
-
-  .checkout-pet {
-    padding: 8px 0;
-  }
-}
-
-.checkout-actions {
-  display: flex;
-  gap: 16px;
-  margin-top: 48px;
-
-  button {
-    flex: 1;
-    padding: 16px;
-    font-size: 28px;
-    cursor: pointer;
-    white-space: nowrap;
-
-    &.buy-button {
-      background: #2d7d2d;
-      border-color: #2d7d2d;
-    }
-
-    &.cancel-button {
-      background: transparent;
-    }
-  }
-}
-
-.gold {
-  color: #ffd700;
-}
-
-</style>
