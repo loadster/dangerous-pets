@@ -81,9 +81,9 @@
     </template>
 
     <template v-else>
-      <div class="max-w-[600px] mx-auto border-8 border-retro-bronze md:max-w-full p-6" data-testid="checkout-screen">
+      <div class="mx-auto border-8 border-retro-bronze p-6" data-testid="checkout-screen">
         <h2 class="mt-0">Checkout</h2>
-        <div class="bg-black p-6 my-8 md:p-6 md:my-6" data-testid="checkout-summary">
+        <div class="bg-black my-8" data-testid="checkout-summary">
           <div class="flex justify-between my-4 md:my-3">
             <span>Your Gold:</span>
             <span>
@@ -99,7 +99,7 @@
               <span class="text-retro-gold">@</span>{{ totalCost }}
             </span>
           </div>
-          <div class="flex justify-between my-4 mt-8 pt-4 border-t-2 border-white text-retro-xlarge md:my-3 md:mt-6 md:pt-3 md:text-retro-xlarge-mobile">
+          <div class="flex w-full justify-between my-4 mt-8 pt-4 border-t-2 border-white text-retro-xlarge">
             <span>Remaining Gold:</span>
             <span data-testid="checkout-remaining-gold">
               <span class="text-retro-gold">@</span>{{ possessions.gold - totalCost }}
