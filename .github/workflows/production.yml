@@ -1,11 +1,14 @@
 name: production
 run-name: Dangerous Pets
+
 on:
   push:
     branches:
       - main
   schedule:
     - cron: '0 0 * * 0'
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
