@@ -12,23 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const staticContentPath = path.join(__dirname, '../../web/dist');
 
-// When CANONICAL_HOST is set (production), permanently redirect any other hostname there,
-// preserving the path. Unset by default so local dev and self-hosted instances are unaffected.
-const canonicalHost = process.env.CANONICAL_HOST;
-
 app.set('json spaces', 2);
-app.set('trust proxy', true);
-
-app.use((req, res, next) => {
-    if (canonicalHost && req.hostname && req.hostname !== canonicalHost) {
-        // 308 for non-GET so clients replaying old API scripts keep their method and body
-        const status = (req.method === 'GET' || req.method === 'HEAD') ? 301 : 308;
-
-        return res.redirect(status, `https://${canonicalHost}${req.originalUrl}`);
-    }
-
-    next();
-});
 
 app.use(express.static(staticContentPath));
 app.use(express.json());

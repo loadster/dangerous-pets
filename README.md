@@ -14,9 +14,5 @@ $ docker run -it -p3001:3001 quay.io/loadster/dangerous-pets
 
 You can then view it in your browser at http://localhost:3001.
 
-Setting the `CANONICAL_HOST` environment variable (unset by default) makes the server
-permanently redirect requests for any other hostname to that host. The live instance runs
-with `CANONICAL_HOST=dangerouspetstore.dev` so old hostnames keep working.
-
 The live pet store is usually running at https://dangerouspetstore.dev. (It used to live at
 petstore.loadster.com, which should redirect to the new domain.)
